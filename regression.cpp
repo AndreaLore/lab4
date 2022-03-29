@@ -5,11 +5,6 @@
 int Regression::size() const { return N_; }
 
 void Regression::add(double x, double y) {
-  ++N_;
-  sum_x_ += x;
-  sum_y_ += y;
-  sum_xy_ += x * y;
-  sum_x2_ += x * x;
 }
 
 Result Regression::fit() const {
@@ -24,6 +19,18 @@ Result Regression::fit() const {
 
   double const a = (sum_y_ * sum_x2_ - sum_x_ * sum_xy_) / d;
   double const b = (N_ * sum_xy_ - sum_x_ * sum_y_) / d;
+
+  double sum_x{};
+  double sum_y{};
+  double sum_xy{};
+  double sum_x2{};
+
+  for (auto const& p : points_) {
+    sum_x += p.x;
+    sum_y += p.y;
+    sum_xy += p.x * p.y;
+    sum_x2 += p.x * p.x;
+  }
 
   return {a, b};
 }
